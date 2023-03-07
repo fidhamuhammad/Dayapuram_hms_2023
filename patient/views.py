@@ -74,7 +74,8 @@ def change_password(request):
 
 def patient_profile(request):
     patient_profile = Patient.objects.get(id = request.session['patient'])
-    return render(request,'patient/patient_profile.html', {'patient': patient_profile})
+
+    return render(request,'patient/patient_profile.html', {'patient': patient_profile,})
 
 def register(request):
     return render(request,'patient/register.html')
@@ -129,7 +130,7 @@ def appt_3(request):
         selected_time = request.GET.get('time')
         reference_no = 'Ref-' + str(randint(1111,9999)) +'-Hms-' + mobile[6:10]
 
-        if request.POST['apt']=="staffBook":
+        if request.POST['apt']=="staffBooking":
             sid=request.session['staff']
             new_booking  = Booking(
                             # patient_id = request.session['patient'],

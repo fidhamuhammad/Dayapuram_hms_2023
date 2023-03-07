@@ -3,6 +3,7 @@ from django.shortcuts import render,redirect
 from django.db.models import Q
 from django.template.loader import render_to_string
 from common.models import Patient
+from patient.models import Booking, Presciption
 from patient.models import Booking
 from common.auth_guard import auth_staff
 
@@ -98,5 +99,18 @@ def logout(request):
     request.session.flush()
     return redirect('common:com-home')
 
-
+def view_Prescription(request):
+    bid=request.POST['bi']
+    print(bid)
+    booking=Booking.objects.get(id=bid)
+    booking_set={'id':booking.id,'reference_no':booking.reference_no,'patient_name': booking.patient_name, 'booking_date':booking.booking_date, 'doctor_id':booking.doctor_id}
+    doctor_name=booking.doctor.doctor_name
+    contact_no = booking.doctor.doctor_contact
+    email = booking.doctor.doctor_email
+    print('***',contact_no)
+    prescriptions = Presciption.objects.filter(booking_id=bid)   
+    serialized_set = [{ 'id' : p.id, 'medicine_name' : p.medicine_name,'days':p.days,'prescription_notes':p.prescription_notes, }  for p in prescriptions]
     
+    return JsonResponse({'data':serialized_set,'booking':booking_set,'doctor_name':doctor_name,'contact_no' : contact_no, 'email': email})
+
+ 

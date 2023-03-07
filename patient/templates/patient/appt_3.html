@@ -51,8 +51,8 @@
                     <div class="flex-grow-1 ms-3">
                         <h5 class="mt-4 mb-1 text-uppercase">{{ dr_name | title }}</h5>
                         <p class="mb-2 pb-1 text-uppercase" style="color: #2b2a2a;">
-                            
-                            {{ dep |  upper}}
+
+                            {{ dep | upper}}
                         </p>
                     </div>
                 </div>
@@ -142,20 +142,21 @@
 <!-- row start  -->
 <div class="row register mb-4">
     <div class="col-5">
-        <form method = 'POST' >
+        <form method='POST'>
             {% csrf_token %}
             <div>
-                <input type="text" required name = 'p_name' placeholder="Name">
+                <input type="text" required name='p_name' placeholder="Name" id="p_name"><br />
+                <span id="checkname" style="font-size: small;"></span>
             </div>
-        
+
     </div>
     <div class="col-5">
-         
-            <div class="gen mt-3">
-                <input type="radio" checked name="gender" value = 'male' id="male" style="width: 50px;">Male
-                <input type="radio" name="gender" id="female" value ="female" style="width: 50px;">Female
-            </div>
-         
+
+        <div class="gen mt-3">
+            <input type="radio" checked name="gender" value='male' id="male" style="width: 50px;">Male
+            <input type="radio" name="gender" id="female" value="female" style="width: 50px;">Female
+        </div>
+
     </div>
 </div>
 <!-- row end  -->
@@ -163,18 +164,19 @@
 <!-- row start  -->
 <div class="row register">
     <div class="col-4">
-        
-            <div>
-                <input type="number" required name ="mobile" placeholder="Mobile Number">
-            </div>
-         
+
+        <div>
+            <input type="number" required name="mobile" placeholder="Mobile Number" id="p_number">
+            <span id="checkno" style="font-size: small;"></span>
+        </div>
+
     </div>
     <div class="col-4">
-         
-            <div>
-                <input type="number" required name = "age" placeholder="Age">
-            </div>
-         
+
+        <div>
+            <input type="number" required name="age" placeholder="Age">
+        </div>
+
     </div>
 </div>
 <!-- row end  -->
@@ -182,20 +184,56 @@
 <div class="row mt-5 bottom">
     <div class="col-6">
         {% if 'patient' in request.session %}
-        <input type = "submit" name="apt" value = 'Book' class="btn btn-primary"> 
+        <input type="submit" name="apt" value='Book' class="btn btn-primary">
         {% else %}
-        <input type = "submit" name="apt" value = 'Book' class="btn btn-primary">
+        <input type="submit" name="apt" value='staffBooking' class="btn btn-primary">
         {% endif %}
         <!-- <a href="" class="btn btn-primary">PAYMENT</a>
         <a href="#otpmodal" class="btn btn-primary ml-3" data-bs-toggle="modal" data-bs-target="#exampleModal">BOOK</a> -->
     </div>
 </div>
 </form>
+<script>
+
+    var pname = document.getElementById('p_name')
+    var number = document.getElementById('p_number')
+
+    pname.onkeyup = function () {
+        var alphabets = /^[a-z A-Z]{2,}$/;
+        if (pname.value.match(alphabets) == null) {
+            document.getElementById('checkname').innerHTML = 'name must contain characters only'
+            document.getElementById('checkname').style.color = 'red'
+            // pname.style.border = 'solid red'
+        }
+        else {
+            document.getElementById('checkname').innerHTML = ''
+            pname.style.border = 'solid green'
+
+        }
+    }
+    number.onkeyup = function () {
+        var contact = /^[6-9][0-9]{9}$/;
+        console.log(number.value.match(contact))
+        if (number.value.match(contact) == null) {
+            document.getElementById('checkno').innerHTML = 'Invalid number'
+            document.getElementById('checkno').style.color = 'red'
+            number.style.border = 'solid red'
+        }
+        else {
+            document.getElementById('checkno').innerHTML = ''
+            document.getElementById('checkno').style.color = 'green'
+            number.style.border = 'solid green'
+        }
+    }
+
+
+
+</script>
 
 
 <!-- <div id="otpmodal"> -->
-    <!-- Modal -->
-    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal -->
+<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -206,9 +244,9 @@
                         <div class="card cnt">
                             <h5 class="m-0">We have sent an OTP message to</h5>
                             <h5 class="m-0">the mobile number</h5> -->
-                            <!-- <span class="mobile-text">Enter the code we just send on your mobile phone
+<!-- <span class="mobile-text">Enter the code we just send on your mobile phone
                                 <b class="text-danger">+91 86684833</b></span> -->
-                            <!-- <div class="d-flex flex-row mt-5">
+<!-- <div class="d-flex flex-row mt-5">
                                 <input type="text" class="form-control" autofocus="">
                                 <input type="text" class="form-control">
                                 <input type="text" class="form-control">

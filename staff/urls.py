@@ -11,5 +11,8 @@ urlpatterns = [
     path('bookings', views.booking_list, name = 'booking_list'),
     path('profile', views.profile, name="staff-prof"),
    
-    path('logout',views.logout,name = 'logout')
+    path('logout',views.logout,name = 'logout'),
+    path('view_Prescription',views.view_Prescription,name='view_Prescription')
+     
+
 ]

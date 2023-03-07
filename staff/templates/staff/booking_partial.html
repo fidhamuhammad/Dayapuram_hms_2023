@@ -11,10 +11,32 @@
         <td> {{ records.doctor.doctor_name | title }} </td>
         <td> {{ records.doctor.department.department | upper }} </td>
         <td> {{ records.mobile }} </td>
+       
          
-        <td> <button type="button" class="btn btn-light"> Print </button>  </td>
-    </tr>
+        
+
+        {% if records.status == 'completed' %}
+        <td>
+            <button type="button" class="btn btn-primary" value="{{records.id}}" data-bs-toggle="modal" 
+            data-bs-target="#exampleModal" onclick="get_pre(this.value)">
+            print</button>
+        </td>
+        {% else %}
+        <td>
+            <button type="button" class="btn btn-danger" value="not Completed">
+            pending</button>
+        </td>
+
+        {% endif %}
+       
+        
+ 
+        </tr>
+
+
     {% endfor %}
  
 
 {% endif %}
+
+ 

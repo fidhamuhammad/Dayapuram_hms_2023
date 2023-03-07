@@ -36,34 +36,36 @@
                     <div class="mt-5" style="width:80%; margin-left: 10%; float: left;">
 
                         <ul style="list-style-type:square;color: black;">
-                            <li id="prof"> Patient Profile </li> <br>
+                            <li class="text-black" id="prof"> Patient Profile </li> <br>
 
                             <div id="pt_prof" style="display: none;">
                                 <table class="table table-primary table-striped">
+                                   
+                               
                                     <tr>
-                                        <th> Patient Name </th>
-                                        <td> Lorem, ipsum. </td>
-                                        <th> Patient ID</th>
-                                        <td> 12345 </td>
+                                        <th> Patient Name </th>                                       
+                                        <td>  {{patient.patient.patient_name}} </td>                                       
+                                        <th>Patient Id </th>
+                                        <td>{{patient.patient.id}}</td>                                           
                                     </tr>
                                     <tr>
                                         <th> Address </th>
-                                        <td> Lorem ipsum dolor sit amet. </td>
+                                        <td class="text-black"> {{patient.patient.address}} </td>
                                         <th> Gender </th>
-                                        <td> Female </td>
+                                        <td class="text-black"> {{patient.patient.gender}} </td>
                                     </tr>
                                     <tr>
                                         <th> Contact Number </th>
-                                        <td> 9845687564 </td>
+                                        <td> {{patient.patient.phone}}</td>
                                         <th> Date of Birth </th>
-                                        <td> 21/07/1994 </td>
+                                        <td> {{patient.patient.dob}} </td>
                                     </tr>
                                     <tr>
                                         <th> Age </th>
-                                        <td> 40 </td>
+                                        <td class="text-black"> {{patient.patient.age}} </td>
                                         <th> Blood Group </th>
-                                        <td> O+ </td>
-                                    </tr>
+                                        <td class="text-black"> {{patient.patient.blood_grp}} </td>
+                                    </tr>   
                                 </table>
                             </div>
 
@@ -79,25 +81,25 @@
                             </script>
 
 
-                            <li id="appt"> Appointment Record </li> <br>
+                            <li class="text-black" id="appt"> Appointment Record </li> <br>
 
                             <div id="appt_record" style="display: none;">
                                 <table class="table table-primary table-striped">
                                     <tr>
                                         <th> Department </th>
-                                        <td> Lorem, ipsum. </td>
+                                        <td> {{patient.doctor.department.department}}</td>
                                     </tr>
                                     <tr>
                                         <th> Doctor </th>
-                                        <td> Lorem ipsum </td>
+                                        <td> {{patient.doctor.doctor_name}} </td>
                                     </tr>
                                     <tr>
                                         <th> Appointment Date </th>
-                                        <td> dd/mm/yyyy </td>
+                                        <td> {{patient.booking_date}} </td>
                                     </tr>
                                     <tr>
                                         <th> Appointment Time </th>
-                                        <td> 10:00 AM</td>
+                                        <td> {{patient.time }}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -199,7 +201,7 @@
 
                             </script> -->
 
-                            <li id="pay"> Payment Report </li> <br>
+                            <li id="pay" class="text-black"> Payment Report </li> <br>
 
                             <div id="payment_report" style="display: none;">
                                 <table class="table table-primary table-striped">

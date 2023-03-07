@@ -4,8 +4,49 @@
 {% block header %}
 
 <link rel="stylesheet" href=" {% static 'assets/css/view_admin.css' %}">
+ <style>
+ .pagination>li {
+    display: inline;
+}
 
+.pagination-sm>li:first-child>a, .pagination-sm>li:first-child>span {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
 
+.pagination>li:first-child>a, .pagination>li:first-child>span {
+    margin-left: 0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.pagination>li>a {
+    background: #fafafa;
+    color: #666;
+}
+
+.pagination-sm>li>a, .pagination-sm>li>span {
+    padding: 5px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.pagination>li>a, .pagination>li>span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #337ab7;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+a {
+    background-color: transparent;
+}
+ </style>
 {% endblock %}
 
 {% block content %}
@@ -17,7 +58,24 @@
                 <div>
                     <h2>View Appointments</h2>
 
-                    <div class="mt-5" style="width:100%;">
+                    
+                    <ul class="pagination pagination-sm no-margin pull-right">
+                      
+                        {% if appointments.has_previous %}
+                        <li><a href="?page={{ appointments.previous_page_number }}" data-abc="true">&laquo;</a></li>
+                     
+                        {% endif %}
+                        
+                        {% if appointments.has_next %}
+                        <li><a href="?page={{ appointments.next_page_number }}" data-abc="true">&raquo;</a></li>
+                    {% endif %}
+                       <li>
+                        <span > 
+                            Page {{ appointments.number }} of {{ appointments.paginator.num_pages }}
+                        </span>
+                       </li>
+                      </ul>
+                     
 
 
                         <table class="table table-striped">
@@ -42,8 +100,9 @@
                                     <td> {{appointment.booking_date}}</td>
                                     <td>{{appointment.time}} </td>
                                     <td>
-                                        <button onclick="report()" type="button" class="btn btn-success">
-                                            View Report</button>
+                                        <a href="{% url 'hms_admin:view_report' appointment.id %}">
+                                        <button type="button" class="btn btn-success">
+                                            View Report</button></a>
                                     </td>
                                 
                                     
@@ -53,11 +112,7 @@
                         </table>
 
 
-                        <script>
-                            function report() {
-                                location.replace("{% url 'hms_admin:view_report' %}")
-                            }
-                        </script>
+                       
 
 
                     </div>

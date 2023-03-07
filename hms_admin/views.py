@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from random import randint
 from django.conf import settings # importing settings.py
 from common.auth_guard import auth_admin
+from django.core.paginator import Paginator
 # Create your views here.
 
 def admin_login(request):
@@ -44,7 +45,10 @@ def chg_pwd(request):
 @auth_admin
 def view_appointments(request):
     appointments = Booking.objects.all()
-    return render(request,'hms_admin/view_appointments.html',{'appointments':appointments})
+    paginator = Paginator(appointments,3)
+    page_number = request.GET.get('page')
+    appointment_obj = paginator.get_page(page_number)
+    return render(request,'hms_admin/view_appointments.html',{'appointments':appointment_obj})
 
 @auth_admin
 def add_doctor(request):
@@ -124,17 +128,24 @@ def consultion_details(request,dr_id):
 @auth_admin
 def doctors_list(request):
     doctors = Doctor.objects.filter(status = 'active')
-    return render(request,'hms_admin/doctors_list.html',{'active_doctors' : doctors})
+    paginator = Paginator(doctors,2)
+    page_number = request.GET.get('page')
+    doctors_obj = paginator.get_page(page_number)
+    return render(request,'hms_admin/doctors_list.html',{'doctors_obj' : doctors_obj})
 
 
 @auth_admin
-def view_report(request):
-    return render(request,'hms_admin/view_report.html')
+def view_report(request,pid):
+    patient = Booking.objects.get(id=pid)
+    return render(request,'hms_admin/view_report.html',{'patient':patient})
 
 
 @auth_admin
 def view_patient(request):
     patient = Patient.objects.all()
+    paginator = Paginator(patient,2)
+    page_number = request.GET.get('page')
+    patient = paginator.get_page(page_number)
     return render(request,'hms_admin/view_patient.html',{'patient':patient})
 
 @auth_admin
@@ -162,6 +173,9 @@ def add_department(request):
 @auth_admin
 def view_department(request):
     departments = Department.objects.all()
+    paginator = Paginator(departments,2)
+    page_number = request.GET.get('page')
+    departments = paginator.get_page(page_number)
     return render(request,'hms_admin/departments.html', {'departments' :departments})
 
 @auth_admin

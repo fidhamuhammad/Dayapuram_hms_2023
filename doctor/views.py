@@ -15,18 +15,19 @@ from common.auth_guard import auth_doctor
 def doctor_home(request):
     doctor = Doctor.objects.filter(
         id=request.session['doctor']).values('doctor_name')
+    doc=Doctor.objects.get(id=request.session['doctor'])
     doc_name = doctor[0]['doctor_name']
     patients_count = Patient.objects.all().count()
    
    
     # today = datetime.strftime(datetime.today(),"%d-%m-%Y")
-    today = "30-01-2023" 
+    today = "09-03-2023" 
      
     total_bookings = Booking.objects.filter(doctor = request.session['doctor'],booking_date = today, status = 'booked').count()
     print('jdwye',total_bookings)
-    return render(request, 'doctor/doctor_home.html', {'doc_name': doc_name,'patients_count': patients_count, 'total_bookings' : total_bookings })
+    return render(request, 'doctor/doctor_home.html', {'doc_name': doc_name,'patients_count': patients_count, 'total_bookings' : total_bookings,'doctor':doc })
 
-
+@auth_doctor
 def profile(request):
     doctor = Doctor.objects.get(id=request.session['doctor'])
     return render(request, 'doctor/profile.html', {'doctor': doctor})
@@ -42,6 +43,7 @@ def edit_profile(request):
         qualification = request.POST['dr_qual']
         experience = request.POST['dr_exp']
         fee = request.POST['dr_fee']
+        pic = request.FILES['doctor_img']
 
         doctor = Doctor.objects.get(id=request.session['doctor'])
         doctor.doctor_name = name
@@ -50,6 +52,7 @@ def edit_profile(request):
         doctor.qualification = qualification
         doctor.experience = experience
         doctor.fee = fee
+        doctor.pic = pic
         doctor.save()
         return redirect('doctor:dr_profile')
 
@@ -59,10 +62,11 @@ def edit_profile(request):
 def appointment(request):
      
     # today = datetime.strftime(datetime.today(), "%d/%m/%Y")
-    today = "30-01-2023" 
+    doc=Doctor.objects.get(id=request.session['doctor'])
+    today = "09-03-2023" 
     records = Booking.objects.filter(doctor = request.session['doctor'], status = 'booked',booking_date = today)
 
-    return render(request, 'doctor/appointment.html',{'booking_records' : records})
+    return render(request, 'doctor/appointment.html',{'booking_records' : records,'doctor':doc})
 
 
 def search_patients(request):
@@ -73,6 +77,7 @@ def search_patients(request):
 
 
 def change_password(request):
+    doc=Doctor.objects.get(id=request.session['doctor'])
 
     error_msg = ''
     success_msg = ''
@@ -102,7 +107,7 @@ def change_password(request):
         else:
             error_msg = 'Password does\'nt match'
 
-    return render(request, 'doctor/change_paswd.html', {'error_msg': error_msg, 'success_msg': success_msg})
+    return render(request, 'doctor/change_paswd.html', {'error_msg': error_msg, 'success_msg': success_msg, 'doctor':doc})
 
 
 def consulting(request):
@@ -120,11 +125,14 @@ def get_patients(request):
 
 def patient_details(request,b_id):
     booking_record = Booking.objects.get(id = b_id) 
+    doc=Doctor.objects.get(id=request.session['doctor'])
     
-    return render(request,'doctor/patient_details.html', {'booking_record' : booking_record,})
+    return render(request,'doctor/patient_details.html', {'booking_record' : booking_record, 'doctor':doc})
 
 def add_prescription(request,b_id):
-    return render(request,'doctor/prescription.html', {'booking_id':b_id})
+    doc=Doctor.objects.get(id=request.session['doctor'])
+
+    return render(request,'doctor/prescription.html', {'booking_id':b_id, 'doctor' :doc})
 
 def submit_prescription(request):
 

@@ -21,7 +21,7 @@
     <link rel="stylesheet" href=" {% static 'plugins/slick-carousel/slick/slick-theme.css' %}" />
 
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href=" {% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 
     <!-- Logout  -->
     <link rel="stylesheet"
@@ -46,7 +46,7 @@
                         <ul class="top-bar-info list-inline-item pl-0 mb-0">
                             <li class="list-inline-item">
                                 <a href="mailto:support@gmail.com"><i
-                                        class="icofont-support-faq mr-2"></i>support@novena.com</a>
+                                        class="icofont-support-faq mr-2"></i>support@heaven.com</a>
                             </li>
                             <li class="list-inline-item">
                                 <i class="icofont-location-pin mr-2"></i>Address Ta-134/A, New
@@ -68,7 +68,7 @@
         <nav class="navbar navbar-expand-lg navigation" id="navbar">
             <div class="container">
                 <a class="navbar-brand" href="{% url 'common:index' %}">
-					<img src="{% static 'images/heavan.png' %}" alt="" class="img-fluid">
+					<img src="{% static 'images/docsymbol.png' %}" height="70px" width="60px" alt="" class="img-fluid">
 				</a>
                 <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarmain"
                     aria-controls="navbarmain" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +82,7 @@
                         </li>
 
                        
-                        <li class="nav-item dropdown">
+                        <!-- <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="" id="dropdown03" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"> Profile </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdown03">
@@ -90,7 +90,7 @@
                                 <li><a class="dropdown-item" href="{% url 'doctor:change_pswd' %}"> Change Password </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
 
                         
 
@@ -105,8 +105,8 @@
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#"
                                 id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown"
                                 aria-expanded="false">
-                                <img src="{{ doctor.pic.url }}"
-                                    class="rounded-circle" height="50" alt="Avatar" />
+                                <img src="{{ doctor.pic.url }}" alt="Avatar" class="rounded-circle"
+                                    width="50">
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <li>

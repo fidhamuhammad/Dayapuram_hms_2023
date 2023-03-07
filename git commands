@@ -1,0 +1,16 @@
+git add .
+
+git stash
+
+git pull origin development
+
+git stash apply
+
+git add .
+
+git commit -m "give message"
+
+git branch -m task-1-27-02 ( give different branch name each time)
+
+git push origin task-1-27-02
+
