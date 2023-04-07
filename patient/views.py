@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render,redirect
 from common.models import Patient
 from doctor.serializers import PrescriptionSerializer
@@ -9,6 +10,8 @@ from django.db.models import Q
 from common.auth_guard import auth_patient
 from .services import get_slots,create_slots,create_bookings,generate_slot
 from django.http import JsonResponse,HttpResponse
+import razorpay
+from django.conf import settings
 # Create your views here.
 
 @auth_patient
@@ -114,7 +117,7 @@ def patient_edit(request):
     return render(request,'patient/pt_edit_profile.html', {'patient': patient_edit})
 
 
-@auth_patient
+ 
 def appt_1(request):
     departments = Department.objects.all()
     availability = Consultation.objects.all()
@@ -122,7 +125,7 @@ def appt_1(request):
     return render(request,'patient/appt_1.html', {'departments' : departments, })
 
 
-@auth_patient
+ 
 def appt_2(request):
 
     doctor_id = request.GET['dr']
@@ -136,7 +139,7 @@ def appt_2(request):
     return render(request,'patient/appt_2.html', {'doctor' :doctor_record,'consultation' : consultation_record })
 
 
-@auth_patient
+ 
 def appt_3(request):
     
 
@@ -152,10 +155,11 @@ def appt_3(request):
         selected_time = request.GET.get('time')
         reference_no = 'Ref-' + str(randint(1111,9999)) +'-Hms-' + mobile[6:10]
 
-        if request.POST['apt']=="staffBook":
+        if 'staff_apt' in request.POST:
             sid=request.session['staff']
+            print('*****',request.session['current_patient'])
             new_booking  = Booking(
-                            # patient_id = request.session['patient'],
+                            patient_id = request.session['current_patient'],
                             patient_name = patient_name,gender = gender,
                             mobile = mobile, age = age,
                             doctor_id = dr,booking_date = selected_date,
@@ -165,18 +169,7 @@ def appt_3(request):
             new_booking.save()
 
             return redirect('patient:appointment_4' ,new_booking.id )
-        if request.POST['apt']=="Book":
-            pid=request.session['patient']
-            new_booking  = Booking(
-                            patient_id = pid,
-                            patient_name = patient_name,gender = gender,
-                            mobile = mobile, age = age,
-                            doctor_id = dr,booking_date = selected_date,
-                            time = selected_time, reference_no = reference_no
-                            )
-
-            new_booking.save()
-            return redirect('patient:appointment_4', new_booking.id )
+        
 
         
 
@@ -201,7 +194,7 @@ def appt_3(request):
 
     return render(request,'patient/appt_3.html',context)
 
-@auth_patient
+ 
 def appt_4(request,bid):
     # latest_booking = Booking.objects.filter(patient = id).last()
     latest_booking = Booking.objects.get(id=bid)
@@ -307,3 +300,63 @@ def view_Prescription(request):
 
 
 
+def order_payment(request):
+        
+        # patient = request.session['patient']
+
+        # booking_id = 1  # replace with the actual booking ID you want to retrieve the doctor's fee for
+
+        # fee = Doctor.objects.filter(booking__id=booking_id).values_list('fee', flat=True).first()
+        data = json.loads(request.POST['files'])
+        doctor_id = data['doctorid']
+        
+        # doctor_id = 1  # replace with the actual doctor ID you want to retrieve the fee for
+
+        doctor = Doctor.objects.get(id=doctor_id)
+        fee = doctor.fee
+        
+       
+        notes={'shipping address':'bomalahalli,bangolre'}
+
+        
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+        payment = client.order.create(
+            {"amount": int(fee) * 100, "currency": "INR", "payment_capture": 1,'notes':notes}
+        )
+
+       
+        return JsonResponse(payment)
+
+
+
+def updatepayment(request):
+
+
+
+    data = json.loads(request.POST['details'])
+    patient_id=request.session['patient']
+    mobile1 =data['mobile']
+    reference_no = 'Ref-' + str(randint(1111,9999)) +'-Hms-' + mobile1[6:10]
+    
+
+
+   
+
+    new_booking  = Booking(
+                            patient_id = patient_id,
+                            patient_name = data['name'],
+                            gender = data['gender'],
+                            mobile = data['mobile'], 
+                            age = data['age'],
+                            doctor_id = data['doctorid'],
+                            booking_date = data['date'],
+                            time = data['time'], 
+                            reference_no = reference_no,
+                            
+                            )
+
+    new_booking.save()
+    bid = new_booking.id
+    
+    return JsonResponse({'resp':'sucsses','bid':bid})

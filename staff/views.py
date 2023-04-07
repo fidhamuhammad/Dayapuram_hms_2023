@@ -49,8 +49,10 @@ def registration(request):
                 patient_record = Patient( patient_name = name ,email = email, address = address , age = age , blood_grp = blood_group , 
                 phone = contact , dob = dob , gender = gender )
 
-            
             patient_record.save()
+            latest_record = Patient.objects.latest('id')
+            request.session['current_patient'] = latest_record.id
+            print('**************************', request.session['current_patient'])
             success_msg = 'Record Added Succesfully'
 
         else:

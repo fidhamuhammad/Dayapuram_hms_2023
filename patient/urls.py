@@ -24,5 +24,7 @@ urlpatterns = [
     path('booking/cancel/<int:id>',views.cancel_booking,name = 'cancel_booking'),
     path('logout',views.logout,name = 'logout'),
     path('booking/history',views.booking_history,name='booking_history'),
-    path('view_Prescription',views.view_Prescription,name='view_Prescription')
+    path('view_Prescription',views.view_Prescription,name='view_Prescription'),
+    path('orderpayment',views.order_payment,name='orderpayment'),
+    path('updatepayment',views.updatepayment,name='updatepayment'),
 ]
