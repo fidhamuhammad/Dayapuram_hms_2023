@@ -83,9 +83,9 @@ WSGI_APPLICATION = 'hospital_mgt.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME' : 'hms_db',
+        'NAME' : 'hmss',
         'USER' : 'postgres',
-        'PASSWORD' : 'postgres',
+        'PASSWORD' : 'root',
         'HOST' : 'localhost',
         'PORT' : '5432',
     }
@@ -151,3 +151,8 @@ EMAIL_HOST_PASSWORD = 'adlkmlfspjiapgmt'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+
+
+RAZORPAY_KEY_ID ='rzp_test_PYui6gTOphErgs'
+RAZORPAY_KEY_SECRET = 'Ntgo4xSfaoobaI7yDxpzROSU'

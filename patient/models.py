@@ -14,6 +14,7 @@ class Booking(models.Model) :
     time = models.CharField(max_length = 10)
     booking_date = models.CharField(max_length = 20)
     status = models.CharField(max_length = 20, default = 'booked')
+    paymentstatus = models.CharField(max_length=20,default='paid')
 
     class Meta : 
         db_table = 'booking_tb'
