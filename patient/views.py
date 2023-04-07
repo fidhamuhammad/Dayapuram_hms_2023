@@ -117,7 +117,7 @@ def patient_edit(request):
     return render(request,'patient/pt_edit_profile.html', {'patient': patient_edit})
 
 
-@auth_patient
+ 
 def appt_1(request):
     departments = Department.objects.all()
     availability = Consultation.objects.all()
@@ -125,7 +125,7 @@ def appt_1(request):
     return render(request,'patient/appt_1.html', {'departments' : departments, })
 
 
-@auth_patient
+ 
 def appt_2(request):
 
     doctor_id = request.GET['dr']
@@ -139,7 +139,7 @@ def appt_2(request):
     return render(request,'patient/appt_2.html', {'doctor' :doctor_record,'consultation' : consultation_record })
 
 
-@auth_patient
+ 
 def appt_3(request):
     
 
@@ -155,10 +155,11 @@ def appt_3(request):
         selected_time = request.GET.get('time')
         reference_no = 'Ref-' + str(randint(1111,9999)) +'-Hms-' + mobile[6:10]
 
-        if request.POST['apt']=="staffBook":
+        if 'staff_apt' in request.POST:
             sid=request.session['staff']
+            print('*****',request.session['current_patient'])
             new_booking  = Booking(
-                            # patient_id = request.session['patient'],
+                            patient_id = request.session['current_patient'],
                             patient_name = patient_name,gender = gender,
                             mobile = mobile, age = age,
                             doctor_id = dr,booking_date = selected_date,
@@ -193,7 +194,7 @@ def appt_3(request):
 
     return render(request,'patient/appt_3.html',context)
 
-@auth_patient
+ 
 def appt_4(request,bid):
     # latest_booking = Booking.objects.filter(patient = id).last()
     latest_booking = Booking.objects.get(id=bid)
